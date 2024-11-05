@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to the Dashboard</h1>
+
+<div>
+    <a href="{% url 'api' %}">
+        <button>API Endpoint</button>
+    </a>
+    <a href="{% url 'free' %}">
+        <button>Free Endpoint</button>
+    </a>
+</div>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}
