@@ -48,7 +48,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "myapp.middleware.logging_middleware.RequestLoggingMiddleware",
     "myapp.middleware.rate_limiting.RateLimitingMiddleware"
 ]
 
@@ -57,11 +56,6 @@ AUTH_USER_MODEL = 'myapp.CustomUser'
 LOGIN_URL = 'login'  
 LOGIN_REDIRECT_URL = 'home' 
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-}
 
 ROOT_URLCONF = "myproject.urls"
 
@@ -135,3 +129,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
