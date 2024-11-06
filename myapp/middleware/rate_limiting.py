@@ -4,12 +4,6 @@ from django.utils import timezone
 class RateLimitingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-        self.rate_limits = {
-            "GOLD": 10,
-            "SILVER": 5,
-            "BRONZE": 2,
-            "DEFAULT": 1,
-        }
 
     def __call__(self, request):
         # Only check rate limiting for API routes
@@ -22,34 +16,29 @@ class RateLimitingMiddleware:
                 "error": "Unauthorized access. Please authenticate."
             }, status=401)
 
-        # Get user's rate limit based on their type
-        rate_limit = self.rate_limits.get(request.user.user_type, self.rate_limits["DEFAULT"])
-        
-        # Get recent requests in the last minute
-        recent_requests = request.user.get_recent_requests(within_minutes=1)
-        request_count = recent_requests.count()
+        # Get the user's rate limit based on their user type
+        user = request.user
+        rate_limit = user.get_rate_limit()
 
-        # If limit exceeded, return error with details
-        if request_count >= rate_limit:
-            newest_request = recent_requests.order_by('-timestamp').first()
-            retry_after = 60 - (timezone.now() - newest_request.timestamp).seconds
-            
+        # Check if the user can make a request based on their rate limit
+        if not user.can_make_request():
+            # If the limit is exceeded, return an error response
+            retry_after = 60 - (timezone.now() - user.last_hit_time).seconds
             return JsonResponse({
                 "error": "Rate limit exceeded",
-                "message": f"You have made {request_count} requests in the last minute. Your limit is {rate_limit} requests per minute.",
-                "user_type": request.user.user_type,
+                "message": f"You have made {user.hit_count} requests in the last minute. Your limit is {rate_limit} requests per minute.",
                 "retry_after_seconds": max(0, retry_after),
             }, status=429)
 
-        # Add the current request to the database
-        request.user.add_api_request()
-        
-        # Get the response
+        # Increment the hit count for the user
+        user.increment_hit_count()
+
+        # Proceed with the request and get the response
         response = self.get_response(request)
-        
-        # Add rate limit headers
+
+        # Add rate limit headers to the response
         response["X-RateLimit-Limit"] = str(rate_limit)
-        response["X-RateLimit-Remaining"] = str(max(0, rate_limit - request_count - 1))
-        response["X-RateLimit-Type"] = str(request.user.user_type)
-        
+        response["X-RateLimit-Remaining"] = str(rate_limit - user.hit_count)
+        response["X-RateLimit-Type"] = str(user.user_type)
+
         return response

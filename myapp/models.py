@@ -1,8 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Count
+from datetime import timedelta
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -32,30 +31,19 @@ class CustomUser(AbstractUser):
         ],
         default="BRONZE",
     )
+    
+    # Tracks the number of requests made in the last minute
+    hit_count = models.PositiveIntegerField(default=0)
+    # Stores the time of the last request
+    last_hit_time = models.DateTimeField(null=True, default=timezone.now)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
-    def get_recent_requests(self, within_minutes=1):
-        """Return requests within a specified time frame in minutes."""
-        cutoff_time = timezone.now() - timedelta(minutes=within_minutes)
-        return self.api_requests.filter(timestamp__gte=cutoff_time)
-
-    def add_api_request(self):
-        return APIRequest.objects.create(user=self, timestamp=timezone.now())
-
-    def get_requests_count(self):
-        return self.api_requests.count()
-
-    def get_daily_requests_count(self):
-        return self.get_recent_requests(within_minutes=1440).count()
-
-    def get_hourly_requests_count(self):
-        return self.get_recent_requests(within_minutes=60).count()
-
     def get_rate_limit(self):
+        """Get the rate limit based on the user's user_type."""
         rate_limits = {
             "GOLD": 10,
             "SILVER": 5,
@@ -65,47 +53,32 @@ class CustomUser(AbstractUser):
         return rate_limits.get(self.user_type, 1)
 
     def can_make_request(self):
-        return self.get_hourly_requests_count() < self.get_rate_limit()
+        """Check if the user can make a request based on the rate limit."""
+        # If more than 1 minute has passed, reset hit count and last hit time
+        if timezone.now() - self.last_hit_time > timedelta(minutes=1):
+            self.hit_count = 0
+            self.last_hit_time = timezone.now()
+            self.save()
+
+        # Return whether the user can still make a request
+        return self.hit_count < self.get_rate_limit()
+
+    def increment_hit_count(self):
+        """Increment the hit count."""
+        # Reset the hit count if the 1-minute window has passed
+        if timezone.now() - self.last_hit_time > timedelta(minutes=1):
+            self.hit_count = 0
+            self.last_hit_time = timezone.now()
+
+        self.hit_count += 1
+        self.save()
+
+    def get_recent_requests(self, within_minutes=1):
+        """Return the number of requests made within the last `within_minutes`."""
+        time_threshold = timezone.now() - timedelta(minutes=within_minutes)
+        return CustomUser.objects.filter(last_hit_time__gte=time_threshold, id=self.id)
 
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         ordering = ['-date_joined']
-
-
-class APIRequest(models.Model):
-    user = models.ForeignKey(
-        CustomUser, 
-        on_delete=models.CASCADE, 
-        related_name="api_requests"
-    )
-    timestamp = models.DateTimeField(default=timezone.now)
-    
-    class Meta:
-        ordering = ['-timestamp']
-        indexes = [
-            models.Index(fields=['timestamp']),
-            models.Index(fields=['user', 'timestamp']),
-        ]
-        verbose_name = 'API Request'
-        verbose_name_plural = 'API Requests'
-
-    def __str__(self):
-        return f"API request by {self.user.email} at {self.timestamp}"
-
-    @classmethod
-    def get_requests_by_user_type(cls):
-        """Get count of requests grouped by user type."""
-        return cls.objects.values(
-            'user__user_type'
-        ).annotate(
-            total_requests=Count('id')
-        ).order_by('user__user_type')
-
-    @classmethod
-    def get_total_requests_today(cls):
-        """Get total requests made today."""
-        today = timezone.now().date()
-        return cls.objects.filter(
-            timestamp__date=today
-        ).count()

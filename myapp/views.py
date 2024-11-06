@@ -101,30 +101,39 @@ class ApiView(View):
     }
 
     def get(self, request, *args, **kwargs):
+        # Ensure that the user is authenticated
+        if not request.user.is_authenticated:
+            return JsonResponse({"error": "User is not authenticated"}, status=403)
 
-        # Get the user's rate limit
-        rate_limit = self.rate_limits.get(request.user.user_type, self.rate_limits["DEFAULT"])
-        
-        # Get recent requests
-        recent_requests = request.user.get_recent_requests(within_minutes=1)
-        request_count = recent_requests.count()
+        user = request.user
+        rate_limit = self.rate_limits.get(user.user_type, self.rate_limits["DEFAULT"])
+
+        if not user.can_make_request():
+            retry_after = 60 - (timezone.now() - user.last_hit_time).seconds
+            return JsonResponse({
+                "error": "Rate limit exceeded",
+                "message": f"You have made {user.hit_count} requests in the last minute. Your limit is {rate_limit} requests per minute.",
+                "retry_after_seconds": max(0, retry_after),
+            }, status=429)
 
         return JsonResponse({
             "status": "success",
             "user": {
-                "email": request.user.email,
-                "type": request.user.user_type,
+                "email": user.email,
+                "type": user.user_type,
             },
             "rate_limiting": {
-                "current_requests": request_count,
+                "current_requests": user.hit_count,
                 "rate_limit": rate_limit,
-                "remaining_requests": max(0, rate_limit - request_count),
+                "remaining_requests": max(0, rate_limit - user.hit_count),
                 "window_size": "1 minute"
             }
         })
 
     def error_response(self, message, status):
         return JsonResponse({"error": message}, status=status)
+
+
 
 class FreeView(View):
     def get(self, request, *args, **kwargs):
