@@ -51,6 +51,8 @@ MIDDLEWARE = [
     "myapp.middleware.rate_limiting.RateLimitingMiddleware"
 ]
 
+
+
 AUTH_USER_MODEL = 'myapp.CustomUser' 
 
 LOGIN_URL = 'login'  

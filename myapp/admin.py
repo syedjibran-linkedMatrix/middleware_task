@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.urls import reverse
-from .models import CustomUser
+from myapp.models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     list_display = (

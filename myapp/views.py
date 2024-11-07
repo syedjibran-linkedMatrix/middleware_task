@@ -93,28 +93,12 @@ class HomeView(TemplateView):
 
 
 class ApiView(View):
-    rate_limits = {
-        "GOLD": 10,
-        "SILVER": 5,
-        "BRONZE": 2,
-        "DEFAULT": 1,
-    }
-
     def get(self, request, *args, **kwargs):
-        # Ensure that the user is authenticated
         if not request.user.is_authenticated:
             return JsonResponse({"error": "User is not authenticated"}, status=403)
 
         user = request.user
-        rate_limit = self.rate_limits.get(user.user_type, self.rate_limits["DEFAULT"])
-
-        if not user.can_make_request():
-            retry_after = 60 - (timezone.now() - user.last_hit_time).seconds
-            return JsonResponse({
-                "error": "Rate limit exceeded",
-                "message": f"You have made {user.hit_count} requests in the last minute. Your limit is {rate_limit} requests per minute.",
-                "retry_after_seconds": max(0, retry_after),
-            }, status=429)
+        rate_limit = user.get_rate_limit()
 
         return JsonResponse({
             "status": "success",
@@ -125,7 +109,6 @@ class ApiView(View):
             "rate_limiting": {
                 "current_requests": user.hit_count,
                 "rate_limit": rate_limit,
-                "remaining_requests": max(0, rate_limit - user.hit_count),
                 "window_size": "1 minute"
             }
         })
