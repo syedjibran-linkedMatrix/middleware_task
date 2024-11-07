@@ -38,13 +38,16 @@ class RegisterView(TemplateView):
                 return JsonResponse(
                     {"error": "Invalid user type"}, status=400
                 )
+            if CustomUser.objects.filter(email=email).exists():
+                return JsonResponse(
+                    {"error": "User with this email already exists"}, status=400
+                )
 
-            # Create user with the specified type
             user = CustomUser.objects.create_user(
                 email=email, password=password, user_type=user_type
             )
 
-            return redirect("login")  # Redirect to login page after successful registration
+            return redirect("login")  
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -109,7 +112,6 @@ class ApiView(View):
             "rate_limiting": {
                 "current_requests": user.hit_count,
                 "rate_limit": rate_limit,
-                "window_size": "1 minute"
             }
         })
 

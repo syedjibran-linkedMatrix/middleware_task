@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -31,7 +32,7 @@ class CustomUser(AbstractUser):
         ],
         default="BRONZE",
     )
-    
+
     hit_count = models.PositiveIntegerField(default=0)
     last_hit_time = models.DateTimeField(null=True, default=timezone.now)
 
@@ -41,12 +42,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def get_rate_limit(self):
-        rate_limits = {
-            "GOLD": 10,
-            "SILVER": 5,
-            "BRONZE": 2,
-            "DEFAULT": 1
-        }
+        rate_limits = {"GOLD": 10, "SILVER": 5, "BRONZE": 2, "DEFAULT": 1}
         return rate_limits.get(self.user_type, rate_limits["DEFAULT"])
 
     def can_make_request(self):
@@ -66,6 +62,6 @@ class CustomUser(AbstractUser):
         self.save(update_fields=["hit_count", "last_hit_time"])
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
-        ordering = ['-date_joined']
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        ordering = ["-date_joined"]
