@@ -1,5 +1,3 @@
-#views.py
-from datetime import timedelta
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -8,8 +6,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic import View, TemplateView
 from django.shortcuts import redirect
 from django.contrib import messages
-from myapp.models import CustomUser 
-from django.utils import timezone  
+from myapp.models import CustomUser
 
 
 User = get_user_model()
@@ -21,33 +18,28 @@ class RegisterView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         try:
-            # Get the POST data
             data = request.POST
             email = data.get("email")
             password = data.get("password")
-            user_type = data.get("user_type", "DEFAULT")  # Default to "DEFAULT" if not provided
+            user_type = data.get("user_type", "DEFAULT")
 
-            # Validate required fields
             if not email or not password:
                 return JsonResponse(
                     {"error": "Email and password are required"}, status=400
                 )
 
-            # Ensure the user_type is valid
             if user_type not in ["BRONZE", "SILVER", "GOLD", "DEFAULT"]:
-                return JsonResponse(
-                    {"error": "Invalid user type"}, status=400
-                )
+                return JsonResponse({"error": "Invalid user type"}, status=400)
             if CustomUser.objects.filter(email=email).exists():
                 return JsonResponse(
                     {"error": "User with this email already exists"}, status=400
                 )
 
-            user = CustomUser.objects.create_user(
+            CustomUser.objects.create_user(
                 email=email, password=password, user_type=user_type
             )
 
-            return redirect("login")  
+            return redirect("login")
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -103,21 +95,22 @@ class ApiView(View):
         user = request.user
         rate_limit = user.get_rate_limit()
 
-        return JsonResponse({
-            "status": "success",
-            "user": {
-                "email": user.email,
-                "type": user.user_type,
-            },
-            "rate_limiting": {
-                "current_requests": user.hit_count,
-                "rate_limit": rate_limit,
+        return JsonResponse(
+            {
+                "status": "success",
+                "user": {
+                    "email": user.email,
+                    "type": user.user_type,
+                },
+                "rate_limiting": {
+                    "current_requests": user.hit_count,
+                    "rate_limit": rate_limit,
+                },
             }
-        })
+        )
 
     def error_response(self, message, status):
         return JsonResponse({"error": message}, status=status)
-
 
 
 class FreeView(View):

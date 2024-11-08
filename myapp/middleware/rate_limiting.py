@@ -1,6 +1,5 @@
 import logging
 from django.http import JsonResponse
-from myapp.models import CustomUser
 
 logging.basicConfig(
     filename="rate_limiting.log",
@@ -8,6 +7,18 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
+
+logger = logging.getLogger()
+
+
+class ExcludeAutoreloadFilter(logging.Filter):
+    def filter(self, record):
+        if "django.utils.autoreload" in record.pathname:
+            return False
+        return True
+
+
+logger.addFilter(ExcludeAutoreloadFilter())
 
 
 class RateLimitingMiddleware:
@@ -22,15 +33,10 @@ class RateLimitingMiddleware:
             return JsonResponse(
                 {"error": "Unauthorized access. Please authenticate."}, status=401
             )
-
-        if not isinstance(request.user, CustomUser):
-            return JsonResponse({"error": "Invalid user type"}, status=400)
-
         user = request.user
         rate_limit = user.get_rate_limit()
-
         if not user.can_make_request():
-            logging.info(
+            logger.info(
                 f"User {user.email} from IP {request.META['REMOTE_ADDR']} has hit the rate limit. Hit count: {user.hit_count}"
             )
             return JsonResponse(
@@ -42,13 +48,9 @@ class RateLimitingMiddleware:
             )
 
         user.increment_hit_count()
-        logging.info(
+        logger.info(
             f"User {user.email} from IP {request.META['REMOTE_ADDR']} made a request. Hit count: {user.hit_count}"
         )
 
         response = self.get_response(request)
-        response["X-RateLimit-Limit"] = str(rate_limit)
-        response["X-RateLimit-Remaining"] = str(rate_limit - user.hit_count)
-        response["X-RateLimit-Type"] = str(user.user_type)
-
         return response

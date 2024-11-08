@@ -61,6 +61,7 @@ class CustomUser(AbstractUser):
         self.hit_count += 1
         self.save(update_fields=["hit_count", "last_hit_time"])
 
+
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
