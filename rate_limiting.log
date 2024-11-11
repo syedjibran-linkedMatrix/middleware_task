@@ -1,3 +1,123 @@
 2024-11-07 13:22:50 - WARNING - Not Found: /login/
 2024-11-07 13:23:11 - INFO - User jibran55@gmail.com from IP 127.0.0.1 made a request. Hit count: 1
 2024-11-07 13:23:14 - WARNING - Too Many Requests: /api/
+2024-11-11 08:50:16 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 08:50:16 - WARNING - Unauthorized: /api/
+2024-11-11 08:50:19 - WARNING - Unauthorized: /login/
+2024-11-11 08:50:20 - WARNING - Bad Request: /login/
+2024-11-11 08:50:20 - WARNING - Not Found: /login/
+2024-11-11 08:50:23 - WARNING - Bad Request: /register/
+2024-11-11 08:50:23 - WARNING - Bad Request: /register/
+2024-11-11 08:50:23 - WARNING - Bad Request: /register/
+2024-11-11 08:55:19 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 08:55:20 - WARNING - Unauthorized: /api/
+2024-11-11 08:55:23 - WARNING - Unauthorized: /login/
+2024-11-11 08:55:24 - WARNING - Bad Request: /login/
+2024-11-11 08:55:24 - WARNING - Not Found: /login/
+2024-11-11 08:55:27 - WARNING - Bad Request: /register/
+2024-11-11 08:55:27 - WARNING - Bad Request: /register/
+2024-11-11 08:55:27 - WARNING - Bad Request: /register/
+2024-11-11 08:55:47 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 08:55:47 - WARNING - Unauthorized: /api/
+2024-11-11 08:55:50 - WARNING - Unauthorized: /login/
+2024-11-11 08:55:50 - WARNING - Bad Request: /login/
+2024-11-11 08:55:51 - WARNING - Not Found: /login/
+2024-11-11 08:55:54 - WARNING - Bad Request: /register/
+2024-11-11 08:55:54 - WARNING - Bad Request: /register/
+2024-11-11 08:55:54 - WARNING - Bad Request: /register/
+2024-11-11 08:59:27 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 08:59:27 - WARNING - Unauthorized: /api/
+2024-11-11 08:59:30 - WARNING - Unauthorized: /login/
+2024-11-11 08:59:31 - WARNING - Bad Request: /login/
+2024-11-11 08:59:31 - WARNING - Not Found: /login/
+2024-11-11 08:59:34 - WARNING - Bad Request: /register/
+2024-11-11 08:59:34 - WARNING - Bad Request: /register/
+2024-11-11 08:59:34 - WARNING - Bad Request: /register/
+2024-11-11 09:01:07 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:01:07 - WARNING - Unauthorized: /api/
+2024-11-11 09:01:10 - WARNING - Unauthorized: /login/
+2024-11-11 09:01:11 - WARNING - Bad Request: /login/
+2024-11-11 09:01:11 - WARNING - Not Found: /login/
+2024-11-11 09:01:14 - WARNING - Bad Request: /register/
+2024-11-11 09:01:14 - WARNING - Bad Request: /register/
+2024-11-11 09:01:14 - WARNING - Bad Request: /register/
+2024-11-11 09:02:12 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:02:13 - WARNING - Unauthorized: /api/
+2024-11-11 09:02:16 - WARNING - Unauthorized: /login/
+2024-11-11 09:02:16 - WARNING - Bad Request: /login/
+2024-11-11 09:02:17 - WARNING - Not Found: /login/
+2024-11-11 09:02:20 - WARNING - Bad Request: /register/
+2024-11-11 09:02:20 - WARNING - Bad Request: /register/
+2024-11-11 09:02:20 - WARNING - Bad Request: /register/
+2024-11-11 09:02:58 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:02:58 - WARNING - Unauthorized: /api/
+2024-11-11 09:03:01 - WARNING - Unauthorized: /login/
+2024-11-11 09:03:02 - WARNING - Bad Request: /login/
+2024-11-11 09:03:02 - WARNING - Not Found: /login/
+2024-11-11 09:03:05 - WARNING - Bad Request: /register/
+2024-11-11 09:03:05 - WARNING - Bad Request: /register/
+2024-11-11 09:03:05 - WARNING - Bad Request: /register/
+2024-11-11 09:23:45 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:23:46 - WARNING - Unauthorized: /api/
+2024-11-11 09:23:49 - WARNING - Unauthorized: /login/
+2024-11-11 09:23:49 - WARNING - Bad Request: /login/
+2024-11-11 09:23:50 - WARNING - Not Found: /login/
+2024-11-11 09:23:53 - WARNING - Bad Request: /register/
+2024-11-11 09:23:53 - WARNING - Bad Request: /register/
+2024-11-11 09:23:53 - WARNING - Bad Request: /register/
+2024-11-11 09:29:11 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:29:12 - WARNING - Unauthorized: /api/
+2024-11-11 09:29:15 - WARNING - Unauthorized: /login/
+2024-11-11 09:29:15 - WARNING - Bad Request: /login/
+2024-11-11 09:29:16 - WARNING - Not Found: /login/
+2024-11-11 09:29:19 - WARNING - Bad Request: /register/
+2024-11-11 09:29:19 - WARNING - Bad Request: /register/
+2024-11-11 09:29:19 - WARNING - Bad Request: /register/
+2024-11-11 09:31:41 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:31:41 - WARNING - Unauthorized: /api/
+2024-11-11 09:31:44 - WARNING - Unauthorized: /login/
+2024-11-11 09:31:45 - WARNING - Bad Request: /login/
+2024-11-11 09:31:45 - WARNING - Not Found: /login/
+2024-11-11 09:31:48 - WARNING - Bad Request: /register/
+2024-11-11 09:31:48 - WARNING - Bad Request: /register/
+2024-11-11 09:31:48 - WARNING - Bad Request: /register/
+2024-11-11 09:37:58 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:37:59 - WARNING - Unauthorized: /api/
+2024-11-11 09:38:02 - WARNING - Unauthorized: /login/
+2024-11-11 09:38:02 - WARNING - Bad Request: /login/
+2024-11-11 09:38:03 - WARNING - Not Found: /login/
+2024-11-11 09:38:06 - WARNING - Bad Request: /register/
+2024-11-11 09:38:06 - WARNING - Bad Request: /register/
+2024-11-11 09:38:06 - WARNING - Bad Request: /register/
+2024-11-11 09:40:47 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:40:48 - WARNING - Unauthorized: /api/
+2024-11-11 09:40:51 - WARNING - Unauthorized: /login/
+2024-11-11 09:40:51 - WARNING - Bad Request: /login/
+2024-11-11 09:40:52 - WARNING - Not Found: /login/
+2024-11-11 09:40:55 - WARNING - Bad Request: /register/
+2024-11-11 09:40:55 - WARNING - Bad Request: /register/
+2024-11-11 09:40:55 - WARNING - Bad Request: /register/
+2024-11-11 09:42:32 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:42:33 - WARNING - Unauthorized: /api/
+2024-11-11 09:42:36 - WARNING - Unauthorized: /login/
+2024-11-11 09:42:36 - WARNING - Bad Request: /login/
+2024-11-11 09:42:37 - WARNING - Not Found: /login/
+2024-11-11 09:42:40 - WARNING - Bad Request: /register/
+2024-11-11 09:42:40 - WARNING - Bad Request: /register/
+2024-11-11 09:42:40 - WARNING - Bad Request: /register/
+2024-11-11 09:44:02 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 09:44:02 - WARNING - Unauthorized: /api/
+2024-11-11 09:44:05 - WARNING - Unauthorized: /login/
+2024-11-11 09:44:06 - WARNING - Bad Request: /login/
+2024-11-11 09:44:06 - WARNING - Not Found: /login/
+2024-11-11 09:44:10 - WARNING - Bad Request: /register/
+2024-11-11 09:44:10 - WARNING - Bad Request: /register/
+2024-11-11 09:44:10 - WARNING - Bad Request: /register/
+2024-11-11 10:21:14 - INFO - User test@example.com from IP 127.0.0.1 made a request. Hit count: 1
+2024-11-11 10:21:14 - WARNING - Unauthorized: /api/
+2024-11-11 10:21:17 - WARNING - Unauthorized: /login/
+2024-11-11 10:21:18 - WARNING - Bad Request: /login/
+2024-11-11 10:21:18 - WARNING - Not Found: /login/
+2024-11-11 10:21:21 - WARNING - Bad Request: /register/
+2024-11-11 10:21:21 - WARNING - Bad Request: /register/
+2024-11-11 10:21:21 - WARNING - Bad Request: /register/
